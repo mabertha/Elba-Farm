@@ -1,0 +1,45 @@
+<div class="space-y-4">
+  <div class="flex justify-between items-center">
+    <p class="text-sm text-forest-500"><%= kandang.length %> kandang terdaftar</p>
+    <a href="/kandang/tambah" class="bg-forest-700 hover:bg-forest-800 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">+ Tambah Kandang</a>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-black/5 shadow-sm overflow-hidden">
+    <table class="w-full text-sm">
+      <thead class="bg-forest-50 text-forest-600 text-xs uppercase">
+        <tr>
+          <th class="text-left px-5 py-3">Nama Kandang</th>
+          <th class="text-left px-5 py-3">Lokasi</th>
+          <th class="text-left px-5 py-3">Kapasitas</th>
+          <th class="text-left px-5 py-3">Populasi</th>
+          <th class="text-left px-5 py-3">Kondisi</th>
+          <th class="text-right px-5 py-3">Aksi</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-forest-50">
+        <% if (!kandang.length) { %>
+          <tr><td colspan="6" class="px-5 py-8 text-center text-forest-400">Belum ada kandang. Tambahkan kandang pertama.</td></tr>
+        <% } %>
+        <% kandang.forEach(k => { %>
+          <tr>
+            <td class="px-5 py-3 font-semibold text-forest-900"><%= k.nama %></td>
+            <td class="px-5 py-3 text-forest-600"><%= k.lokasi %></td>
+            <td class="px-5 py-3 text-forest-600"><%= k.kapasitas %> ekor</td>
+            <td class="px-5 py-3">
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold <%= k.populasi > k.kapasitas ? 'bg-red-50 text-red-600' : 'bg-forest-50 text-forest-600' %>">
+                <%= k.populasi %> / <%= k.kapasitas %>
+              </span>
+            </td>
+            <td class="px-5 py-3 text-forest-600"><%= k.kondisi %></td>
+            <td class="px-5 py-3 text-right space-x-2">
+              <a href="/kandang/<%= k.id %>/edit" class="text-forest-600 hover:text-forest-900 text-xs font-semibold">Edit</a>
+              <form action="/kandang/<%= k.id %>?_method=DELETE" method="POST" class="inline" onsubmit="return confirm('Hapus kandang ini?')">
+                <button class="text-clay-600 hover:text-clay-500 text-xs font-semibold">Hapus</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

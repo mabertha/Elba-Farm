@@ -1,0 +1,56 @@
+<div class="space-y-6">
+  <div class="flex justify-between items-center">
+    <p class="text-sm text-forest-500"><%= pakan.length %> jenis pakan terdaftar</p>
+    <a href="/pakan/tambah" class="bg-forest-700 hover:bg-forest-800 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">+ Tambah Jenis Pakan</a>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <% pakan.forEach(p => { %>
+      <div class="bg-white rounded-2xl border border-black/5 shadow-sm p-5">
+        <div class="flex justify-between items-start mb-2">
+          <p class="font-display font-bold text-forest-900"><%= p.nama %></p>
+          <% if (p.stok <= batasMinimum) { %>
+            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-50 text-red-600">STOK MENIPIS</span>
+          <% } %>
+        </div>
+        <p class="text-xs text-forest-400 mb-3">Supplier: <%= p.supplier || '-' %></p>
+        <p class="font-display text-2xl font-extrabold text-forest-900 mb-4"><%= p.stok %> <span class="text-sm font-normal text-forest-400"><%= p.satuan %></span></p>
+
+        <details class="text-xs">
+          <summary class="cursor-pointer font-semibold text-forest-600 mb-2">+ Catat Pemakaian / Stok Masuk</summary>
+          <form action="/pakan/pakai" method="POST" class="flex gap-1.5 mb-2">
+            <input type="hidden" name="pakan_id" value="<%= p.id %>">
+            <input name="jumlah" type="number" step="0.1" min="0" required placeholder="Jml pakai" class="flex-1 px-2 py-1.5 rounded-lg border border-forest-200">
+            <button class="bg-wheat-500 hover:bg-wheat-600 text-white font-semibold px-3 rounded-lg">Pakai</button>
+          </form>
+          <form action="/pakan/masuk" method="POST" class="flex gap-1.5">
+            <input type="hidden" name="pakan_id" value="<%= p.id %>">
+            <input name="jumlah" type="number" step="0.1" min="0" required placeholder="Jml masuk" class="flex-1 px-2 py-1.5 rounded-lg border border-forest-200">
+            <input name="total_biaya" type="number" min="0" placeholder="Biaya Rp" class="flex-1 px-2 py-1.5 rounded-lg border border-forest-200">
+            <button class="bg-forest-600 hover:bg-forest-700 text-white font-semibold px-3 rounded-lg">Masuk</button>
+          </form>
+        </details>
+      </div>
+    <% }) %>
+    <% if (!pakan.length) { %>
+      <p class="text-forest-400 text-sm col-span-3 text-center py-8">Belum ada jenis pakan.</p>
+    <% } %>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-black/5 shadow-sm overflow-hidden">
+    <div class="px-5 py-3 border-b border-forest-50">
+      <h3 class="font-display font-bold text-forest-900 text-sm">Log Pemakaian Terbaru</h3>
+    </div>
+    <table class="w-full text-sm">
+      <thead class="bg-forest-50 text-forest-600 text-xs uppercase">
+        <tr><th class="text-left px-5 py-2">Tanggal</th><th class="text-left px-5 py-2">Pakan</th><th class="text-left px-5 py-2">Jumlah</th><th class="text-left px-5 py-2">Catatan</th></tr>
+      </thead>
+      <tbody class="divide-y divide-forest-50">
+        <% if (!log.length) { %><tr><td colspan="4" class="px-5 py-6 text-center text-forest-400">Belum ada log pemakaian.</td></tr><% } %>
+        <% log.forEach(l => { %>
+          <tr><td class="px-5 py-2 text-forest-600"><%= l.tanggal %></td><td class="px-5 py-2 font-medium"><%= l.pakan_nama %></td><td class="px-5 py-2"><%= l.jumlah %></td><td class="px-5 py-2 text-forest-400"><%= l.catatan || '-' %></td></tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

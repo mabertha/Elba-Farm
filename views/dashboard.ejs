@@ -1,0 +1,114 @@
+<div class="space-y-6">
+  <!-- Notifikasi -->
+  <% if (notifikasi.length) { %>
+    <div class="space-y-2">
+      <% notifikasi.forEach(n => { %>
+        <div class="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium <%= n.tipe === 'danger' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-wheat-100 text-wheat-600 border border-wheat-300' %>">
+          <span>⚠️</span> <span><%= n.pesan %></span>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <!-- Stat cards -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl p-5 border border-black/5 shadow-sm">
+      <p class="text-xs text-forest-500 font-semibold mb-1">Total Populasi</p>
+      <p class="font-display text-3xl font-extrabold text-forest-900"><%= totalPopulasi %></p>
+      <p class="text-[11px] text-forest-400 mt-1"><%= produktif %> ekor produktif</p>
+    </div>
+    <div class="bg-white rounded-2xl p-5 border border-black/5 shadow-sm">
+      <p class="text-xs text-forest-500 font-semibold mb-1">Jumlah Kandang</p>
+      <p class="font-display text-3xl font-extrabold text-forest-900"><%= jumlahKandang %></p>
+      <p class="text-[11px] text-forest-400 mt-1">Kandang aktif</p>
+    </div>
+    <div class="bg-white rounded-2xl p-5 border border-black/5 shadow-sm">
+      <p class="text-xs text-forest-500 font-semibold mb-1">Ayam Mati / Afkir</p>
+      <p class="font-display text-3xl font-extrabold text-clay-600"><%= totalMati %> / <%= totalAfkir %></p>
+      <p class="text-[11px] text-forest-400 mt-1">Sepanjang waktu</p>
+    </div>
+    <div class="bg-white rounded-2xl p-5 border border-black/5 shadow-sm">
+      <p class="text-xs text-forest-500 font-semibold mb-1">Laba / Rugi</p>
+      <p class="font-display text-2xl font-extrabold <%= laba >= 0 ? 'text-forest-600' : 'text-clay-600' %>">Rp <%= laba.toLocaleString('id-ID') %></p>
+      <p class="text-[11px] text-forest-400 mt-1">Pemasukan − Pengeluaran</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <!-- Produksi telur -->
+    <div class="lg:col-span-2 bg-white rounded-2xl p-5 border border-black/5 shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display font-bold text-forest-900">Produksi Telur (7 Hari Terakhir)</h3>
+        <span class="text-xs text-forest-400">butir</span>
+      </div>
+      <canvas id="chartProduksi" height="110"></canvas>
+      <div class="grid grid-cols-4 gap-2 mt-5 text-center">
+        <div><p class="text-[11px] text-forest-400">Hari Ini</p><p class="font-display font-bold text-forest-900"><%= produksiStats.hariIni %></p></div>
+        <div><p class="text-[11px] text-forest-400">Minggu Ini</p><p class="font-display font-bold text-forest-900"><%= produksiStats.mingguIni %></p></div>
+        <div><p class="text-[11px] text-forest-400">Bulan Ini</p><p class="font-display font-bold text-forest-900"><%= produksiStats.bulanIni %></p></div>
+        <div><p class="text-[11px] text-forest-400">Tahun Ini</p><p class="font-display font-bold text-forest-900"><%= produksiStats.tahunIni %></p></div>
+      </div>
+    </div>
+
+    <!-- Keuangan ringkas -->
+    <div class="bg-white rounded-2xl p-5 border border-black/5 shadow-sm">
+      <h3 class="font-display font-bold text-forest-900 mb-4">Ringkasan Keuangan</h3>
+      <div class="space-y-3">
+        <div class="flex justify-between text-sm">
+          <span class="text-forest-500">Total Pemasukan</span>
+          <span class="font-semibold text-forest-700">Rp <%= pemasukan.toLocaleString('id-ID') %></span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-forest-500">Total Pengeluaran</span>
+          <span class="font-semibold text-clay-600">Rp <%= pengeluaran.toLocaleString('id-ID') %></span>
+        </div>
+        <div class="h-px bg-forest-100"></div>
+        <div class="flex justify-between text-sm">
+          <span class="font-semibold text-forest-900">Saldo</span>
+          <span class="font-display font-extrabold <%= laba >= 0 ? 'text-forest-700' : 'text-clay-600' %>">Rp <%= laba.toLocaleString('id-ID') %></span>
+        </div>
+      </div>
+      <a href="/keuangan" class="mt-5 block text-center text-sm font-semibold text-white bg-forest-700 hover:bg-forest-800 rounded-lg py-2 transition">Lihat Detail Keuangan →</a>
+    </div>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+    <a href="/produksi/tambah" class="bg-white rounded-xl p-4 border border-black/5 hover:border-forest-300 hover:shadow-sm transition text-center">
+      <p class="text-2xl mb-1">🥚</p><p class="text-xs font-semibold text-forest-700">Catat Produksi</p>
+    </a>
+    <a href="/pakan" class="bg-white rounded-xl p-4 border border-black/5 hover:border-forest-300 hover:shadow-sm transition text-center">
+      <p class="text-2xl mb-1">🌾</p><p class="text-xs font-semibold text-forest-700">Cek Stok Pakan</p>
+    </a>
+    <a href="/ayam/tambah" class="bg-white rounded-xl p-4 border border-black/5 hover:border-forest-300 hover:shadow-sm transition text-center">
+      <p class="text-2xl mb-1">🐔</p><p class="text-xs font-semibold text-forest-700">Tambah Batch</p>
+    </a>
+    <a href="/penjualan/tambah" class="bg-white rounded-xl p-4 border border-black/5 hover:border-forest-300 hover:shadow-sm transition text-center">
+      <p class="text-2xl mb-1">💰</p><p class="text-xs font-semibold text-forest-700">Catat Penjualan</p>
+    </a>
+  </div>
+</div>
+
+<script>
+  const ctx = document.getElementById('chartProduksi');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: <%- grafikHari %>,
+      datasets: [{
+        label: 'Butir Telur',
+        data: <%- grafikJumlah %>,
+        borderColor: '#2c5c3f',
+        backgroundColor: 'rgba(61,122,85,0.1)',
+        tension: 0.35,
+        fill: true,
+        pointRadius: 3,
+        pointBackgroundColor: '#2c5c3f'
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, grid: { color: '#f0f0ea' } }, x: { grid: { display: false } } }
+    }
+  });
+</script>

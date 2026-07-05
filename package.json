@@ -1,0 +1,20 @@
+{
+  "name": "elba-farm-management",
+  "version": "1.0.0",
+  "description": "Elba Farm Management - Sistem Informasi Manajemen Peternakan Ayam Petelur",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node db/seed.js"
+  },
+  "dependencies": {
+    "lowdb": "^1.0.0",
+    "express": "^4.19.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.0",
+    "bcryptjs": "^2.4.3",
+    "ejs": "^3.1.10",
+    "method-override": "^3.0.0",
+    "dayjs": "^1.11.10"
+  }
+}

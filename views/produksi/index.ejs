@@ -1,0 +1,53 @@
+<div class="space-y-6">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl p-4 border border-black/5 shadow-sm text-center">
+      <p class="text-[11px] text-forest-400 mb-1">Hari Ini</p><p class="font-display text-2xl font-extrabold text-forest-900"><%= stats.hariIni %></p>
+    </div>
+    <div class="bg-white rounded-2xl p-4 border border-black/5 shadow-sm text-center">
+      <p class="text-[11px] text-forest-400 mb-1">Minggu Ini</p><p class="font-display text-2xl font-extrabold text-forest-900"><%= stats.mingguIni %></p>
+    </div>
+    <div class="bg-white rounded-2xl p-4 border border-black/5 shadow-sm text-center">
+      <p class="text-[11px] text-forest-400 mb-1">Bulan Ini</p><p class="font-display text-2xl font-extrabold text-forest-900"><%= stats.bulanIni %></p>
+    </div>
+    <div class="bg-white rounded-2xl p-4 border border-black/5 shadow-sm text-center">
+      <p class="text-[11px] text-forest-400 mb-1">Tahun Ini</p><p class="font-display text-2xl font-extrabold text-forest-900"><%= stats.tahunIni %></p>
+    </div>
+  </div>
+
+  <div class="flex justify-between items-center">
+    <p class="text-sm text-forest-500">Riwayat produksi telur</p>
+    <a href="/produksi/tambah" class="bg-forest-700 hover:bg-forest-800 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">+ Catat Produksi</a>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-black/5 shadow-sm overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead class="bg-forest-50 text-forest-600 text-xs uppercase">
+        <tr>
+          <th class="text-left px-5 py-3">Tanggal</th><th class="text-left px-5 py-3">Batch</th>
+          <th class="text-left px-5 py-3">Jumlah</th><th class="text-left px-5 py-3">Berat (kg)</th>
+          <th class="text-left px-5 py-3">Grade A/B/C</th><th class="text-left px-5 py-3">Retak/Rusak</th>
+          <th class="text-left px-5 py-3">Terjual</th><th class="text-right px-5 py-3">Aksi</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-forest-50">
+        <% if (!produksi.length) { %><tr><td colspan="8" class="px-5 py-8 text-center text-forest-400">Belum ada data produksi.</td></tr><% } %>
+        <% produksi.forEach(p => { const b = batch.find(x => x.id === p.batch_id); %>
+          <tr>
+            <td class="px-5 py-3 text-forest-600"><%= p.tanggal %></td>
+            <td class="px-5 py-3 font-medium"><%= b ? b.kode_batch : '-' %></td>
+            <td class="px-5 py-3 font-semibold text-forest-900"><%= p.jumlah_butir %></td>
+            <td class="px-5 py-3 text-forest-600"><%= p.berat_kg %></td>
+            <td class="px-5 py-3 text-forest-600"><%= p.grade_a %>/<%= p.grade_b %>/<%= p.grade_c %></td>
+            <td class="px-5 py-3 text-clay-600"><%= p.retak %>/<%= p.rusak %></td>
+            <td class="px-5 py-3 text-forest-600"><%= p.terjual || 0 %></td>
+            <td class="px-5 py-3 text-right">
+              <form action="/produksi/<%= p.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Hapus data ini?')">
+                <button class="text-clay-600 hover:text-clay-500 text-xs font-semibold">Hapus</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

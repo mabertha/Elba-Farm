@@ -1,0 +1,57 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "nama": "Berlian",
+      "username": "admin",
+      "password": "$2a$08$O0MA1qEwlHung9BJvhCiquwkQ3TlB/zBLDCZMb.UdUVkjEAPFhXoK",
+      "role": "admin",
+      "created_at": "2026-07-05T03:24:21.964Z"
+    }
+  ],
+  "kandang": [
+    {
+      "id": 1,
+      "nama": "Kandang Elba 1",
+      "kapasitas": 20,
+      "lokasi": "Rumah - Sidoarjo",
+      "kondisi": "Baik",
+      "created_at": "2026-07-05T03:24:21.965Z"
+    }
+  ],
+  "batch": [
+    {
+      "id": 1,
+      "kode_batch": "ELBA-001",
+      "ras": "Elba",
+      "jumlah_awal": 6,
+      "jumlah_aktif": 6,
+      "jumlah_mati": 0,
+      "jumlah_afkir": 0,
+      "tanggal_masuk": "2026-07-02",
+      "asal_supplier": "Sumobito",
+      "kandang_id": 1,
+      "status_produksi": "produktif",
+      "catatan": "Batch awal 6 ekor ayam Elba. 5 Betina - 1 Jantan",
+      "created_at": "2026-07-05T03:24:21.966Z",
+      "umur_awal_hari": 28
+    }
+  ],
+  "pakan": [],
+  "pakan_log": [],
+  "produksi": [],
+  "penjualan": [],
+  "keuangan": [],
+  "kesehatan": [],
+  "counters": {
+    "user": 1,
+    "kandang": 1,
+    "batch": 1,
+    "pakan": 0,
+    "pakan_log": 0,
+    "produksi": 0,
+    "penjualan": 0,
+    "keuangan": 0,
+    "kesehatan": 0
+  }
+}

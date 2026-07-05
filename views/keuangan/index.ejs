@@ -1,0 +1,56 @@
+<div class="space-y-6">
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <div class="bg-white rounded-2xl p-4 border border-black/5 shadow-sm">
+      <p class="text-[11px] text-forest-400 mb-1">Total Pemasukan</p>
+      <p class="font-display text-xl font-extrabold text-forest-700">Rp <%= pemasukan.toLocaleString('id-ID') %></p>
+    </div>
+    <div class="bg-white rounded-2xl p-4 border border-black/5 shadow-sm">
+      <p class="text-[11px] text-forest-400 mb-1">Total Pengeluaran</p>
+      <p class="font-display text-xl font-extrabold text-clay-600">Rp <%= pengeluaran.toLocaleString('id-ID') %></p>
+    </div>
+    <div class="bg-white rounded-2xl p-4 border border-black/5 shadow-sm">
+      <p class="text-[11px] text-forest-400 mb-1">Saldo</p>
+      <p class="font-display text-xl font-extrabold <%= saldo >= 0 ? 'text-forest-900' : 'text-clay-600' %>">Rp <%= saldo.toLocaleString('id-ID') %></p>
+    </div>
+  </div>
+
+  <div class="bg-wheat-100 rounded-2xl p-4 text-sm text-wheat-600 font-medium">
+    Laba bulan ini: Rp <%= labaBulan.toLocaleString('id-ID') %> (Pemasukan Rp <%= pemasukanBulan.toLocaleString('id-ID') %> − Pengeluaran Rp <%= pengeluaranBulan.toLocaleString('id-ID') %>)
+  </div>
+
+  <div class="flex justify-between items-center">
+    <p class="text-sm text-forest-500">Riwayat transaksi</p>
+    <a href="/keuangan/tambah" class="bg-forest-700 hover:bg-forest-800 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">+ Tambah Transaksi</a>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-black/5 shadow-sm overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead class="bg-forest-50 text-forest-600 text-xs uppercase">
+        <tr>
+          <th class="text-left px-5 py-3">Tanggal</th><th class="text-left px-5 py-3">Jenis</th>
+          <th class="text-left px-5 py-3">Kategori</th><th class="text-left px-5 py-3">Deskripsi</th>
+          <th class="text-left px-5 py-3">Jumlah</th><th class="text-right px-5 py-3">Aksi</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-forest-50">
+        <% if (!transaksi.length) { %><tr><td colspan="6" class="px-5 py-8 text-center text-forest-400">Belum ada transaksi.</td></tr><% } %>
+        <% transaksi.forEach(t => { %>
+          <tr>
+            <td class="px-5 py-3 text-forest-600"><%= t.tanggal %></td>
+            <td class="px-5 py-3">
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-full <%= t.jenis === 'pemasukan' ? 'bg-forest-50 text-forest-600' : 'bg-red-50 text-red-600' %>"><%= t.jenis %></span>
+            </td>
+            <td class="px-5 py-3 text-forest-600"><%= t.kategori %></td>
+            <td class="px-5 py-3 text-forest-600"><%= t.deskripsi %></td>
+            <td class="px-5 py-3 font-semibold <%= t.jenis === 'pemasukan' ? 'text-forest-700' : 'text-clay-600' %>">Rp <%= t.jumlah.toLocaleString('id-ID') %></td>
+            <td class="px-5 py-3 text-right">
+              <form action="/keuangan/<%= t.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Hapus transaksi ini?')">
+                <button class="text-clay-600 hover:text-clay-500 text-xs font-semibold">Hapus</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

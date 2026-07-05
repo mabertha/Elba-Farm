@@ -1,0 +1,51 @@
+<div class="space-y-4">
+  <div class="flex justify-between items-center">
+    <p class="text-sm text-forest-500"><%= batch.length %> batch ayam terdaftar</p>
+    <a href="/ayam/tambah" class="bg-forest-700 hover:bg-forest-800 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">+ Tambah Batch</a>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <% if (!batch.length) { %>
+      <p class="text-forest-400 text-sm col-span-2 text-center py-8">Belum ada batch ayam.</p>
+    <% } %>
+    <% batch.forEach(b => { %>
+      <div class="bg-white rounded-2xl border border-black/5 shadow-sm p-5">
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <p class="font-display font-bold text-forest-900"><%= b.kode_batch %> <span class="text-forest-400 font-normal text-sm">· <%= b.ras %></span></p>
+            <p class="text-xs text-forest-400">Kandang: <%= b.kandang_nama %></p>
+          </div>
+          <span class="text-xs font-semibold px-2 py-1 rounded-full <%= b.status_produksi === 'produktif' ? 'bg-forest-50 text-forest-600' : 'bg-wheat-100 text-wheat-600' %>">
+            <%= b.status_produksi %>
+          </span>
+        </div>
+        <div class="grid grid-cols-4 gap-2 text-center mb-4">
+          <div><p class="text-[10px] text-forest-400">Aktif</p><p class="font-bold text-forest-900"><%= b.jumlah_aktif %></p></div>
+          <div><p class="text-[10px] text-forest-400">Mati</p><p class="font-bold text-clay-600"><%= b.jumlah_mati %></p></div>
+          <div><p class="text-[10px] text-forest-400">Afkir</p><p class="font-bold text-wheat-600"><%= b.jumlah_afkir %></p></div>
+          <div><p class="text-[10px] text-forest-400">Umur</p><p class="font-bold text-forest-900"><%= b.umur_minggu %> mgg</p></div>
+        </div>
+        <div class="flex items-center gap-2 text-xs">
+          <a href="/ayam/<%= b.id %>" class="text-forest-700 font-semibold hover:text-forest-900">Lihat Detail</a>
+          <span class="text-forest-200">|</span>
+          <a href="/ayam/<%= b.id %>/edit" class="text-forest-600 font-semibold hover:text-forest-900">Edit</a>
+          <span class="text-forest-200">|</span>
+          <button onclick="document.getElementById('kurangi-<%= b.id %>').classList.toggle('hidden')" class="text-clay-600 font-semibold hover:text-clay-500">Catat Kematian/Afkir</button>
+          <span class="text-forest-200">|</span>
+          <form action="/ayam/<%= b.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Hapus batch ini?')">
+            <button class="text-forest-400 font-semibold hover:text-clay-500">Hapus</button>
+          </form>
+        </div>
+        <form id="kurangi-<%= b.id %>" action="/ayam/<%= b.id %>/kurangi" method="POST" class="hidden mt-3 pt-3 border-t border-forest-50 grid grid-cols-3 gap-2">
+          <select name="jenis" class="col-span-1 text-xs px-2 py-1.5 rounded-lg border border-forest-200">
+            <option value="mati">Mati</option>
+            <option value="afkir">Afkir</option>
+          </select>
+          <input name="jumlah" type="number" min="1" required placeholder="Jumlah" class="col-span-1 text-xs px-2 py-1.5 rounded-lg border border-forest-200">
+          <button class="col-span-1 bg-clay-600 hover:bg-clay-500 text-white text-xs font-semibold rounded-lg">Simpan</button>
+          <input name="catatan" placeholder="Catatan (opsional)" class="col-span-3 text-xs px-2 py-1.5 rounded-lg border border-forest-200 mt-1">
+        </form>
+      </div>
+    <% }) %>
+  </div>
+</div>

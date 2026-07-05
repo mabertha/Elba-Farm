@@ -1,0 +1,69 @@
+<div class="max-w-lg bg-white rounded-2xl border border-black/5 shadow-sm p-6">
+  <form action="<%= batch ? '/ayam/' + batch.id + '?_method=PUT' : '/ayam' %>" method="POST" class="space-y-4">
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-xs font-semibold text-forest-700 mb-1">Kode Batch</label>
+        <input name="kode_batch" required value="<%= batch ? batch.kode_batch : '' %>" class="w-full px-4 py-2.5 rounded-lg border border-forest-200 focus:outline-none focus:ring-2 focus:ring-forest-500" placeholder="ELBA-002">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-forest-700 mb-1">Ras / Jenis</label>
+        <input name="ras" required value="<%= batch ? batch.ras : 'Elba' %>" class="w-full px-4 py-2.5 rounded-lg border border-forest-200 focus:outline-none focus:ring-2 focus:ring-forest-500">
+      </div>
+    </div>
+    <% if (!batch) { %>
+    <div>
+      <label class="block text-xs font-semibold text-forest-700 mb-1">Jumlah Awal (ekor)</label>
+      <input name="jumlah_awal" type="number" min="1" required class="w-full px-4 py-2.5 rounded-lg border border-forest-200 focus:outline-none focus:ring-2 focus:ring-forest-500">
+    </div>
+    <% } %>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-xs font-semibold text-forest-700 mb-1">Tanggal Masuk / Beli</label>
+        <input name="tanggal_masuk" type="date" required value="<%= batch ? batch.tanggal_masuk : '' %>" class="w-full px-4 py-2.5 rounded-lg border border-forest-200 focus:outline-none focus:ring-2 focus:ring-forest-500">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-forest-700 mb-1">Kandang</label>
+        <select name="kandang_id" required class="w-full px-4 py-2.5 rounded-lg border border-forest-200 focus:outline-none focus:ring-2 focus:ring-forest-500">
+          <% kandang.forEach(k => { %>
+            <option value="<%= k.id %>" <%= batch && batch.kandang_id === k.id ? 'selected' : '' %>><%= k.nama %></option>
+          <% }) %>
+        </select>
+      </div>
+    </div>
+    <div class="bg-wheat-100 rounded-lg p-3">
+      <label class="block text-xs font-semibold text-wheat-600 mb-1">Umur Ayam Saat Masuk / Dibeli</label>
+      <p class="text-[11px] text-forest-500 mb-2">Isi kalau ayam yang dibeli sudah tidak baru menetas — misal beli ayam umur 4 minggu atau 3 bulan.</p>
+      <div class="grid grid-cols-2 gap-3">
+        <input name="umur_awal_nilai" type="number" min="0" step="1"
+               value="<%= batch ? (batch.umur_awal_nilai_prefill || 0) : 0 %>"
+               placeholder="0" class="w-full px-4 py-2.5 rounded-lg border border-forest-200 focus:outline-none focus:ring-2 focus:ring-forest-500">
+        <select name="umur_awal_satuan" class="w-full px-4 py-2.5 rounded-lg border border-forest-200 focus:outline-none focus:ring-2 focus:ring-forest-500">
+          <option value="minggu" selected>Minggu</option>
+          <option value="bulan">Bulan</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <label class="block text-xs font-semibold text-forest-700 mb-1">Asal Supplier</label>
+      <input name="asal_supplier" value="<%= batch ? batch.asal_supplier : '' %>" class="w-full px-4 py-2.5 rounded-lg border border-forest-200 focus:outline-none focus:ring-2 focus:ring-forest-500" placeholder="Ternak Keluarga">
+    </div>
+    <% if (batch) { %>
+    <div>
+      <label class="block text-xs font-semibold text-forest-700 mb-1">Status Produksi</label>
+      <select name="status_produksi" class="w-full px-4 py-2.5 rounded-lg border border-forest-200 focus:outline-none focus:ring-2 focus:ring-forest-500">
+        <% ['produktif','tidak produktif','afkir'].forEach(opt => { %>
+          <option <%= batch.status_produksi === opt ? 'selected' : '' %>><%= opt %></option>
+        <% }) %>
+      </select>
+    </div>
+    <% } %>
+    <div>
+      <label class="block text-xs font-semibold text-forest-700 mb-1">Catatan</label>
+      <textarea name="catatan" rows="2" class="w-full px-4 py-2.5 rounded-lg border border-forest-200 focus:outline-none focus:ring-2 focus:ring-forest-500"><%= batch ? batch.catatan : '' %></textarea>
+    </div>
+    <div class="flex gap-3 pt-2">
+      <button class="bg-forest-700 hover:bg-forest-800 text-white font-semibold px-5 py-2.5 rounded-lg transition text-sm">Simpan</button>
+      <a href="/ayam" class="text-forest-500 text-sm font-semibold px-5 py-2.5">Batal</a>
+    </div>
+  </form>
+</div>
